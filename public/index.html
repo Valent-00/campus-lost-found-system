@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Campus Lost & Found</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body data-page="home">
+
+<header>
+    <h1>Campus Lost & Found Management System</h1>
+</header>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">Lost & Found</a>
+        <div class="nav-links">
+            <a href="index.html" data-page="home" class="active">Home</a>
+            <a href="lost.html" data-page="lost">Lost</a>
+            <a href="found.html" data-page="found">Found</a>
+            <a href="report.html" class="nav-btn" data-page="report">Report</a>
+        </div>
+    </div>
+</nav>
+
+<main class="hero">
+    <h2>Report and Track<br>Lost Items Easily</h2>
+    <p>A centralized digital system for students and security officers at Quest International University.</p>
+    <div class="hero-buttons">
+        <a href="report.html?type=Lost" class="primary-btn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Report Lost
+        </a>
+        <a href="report.html?type=Found" class="secondary-btn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Report Found
+        </a>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 Quest International University</p>
+</footer>
+
+<script src="js/nav-auth.js" defer></script>
+</body>
+</html>

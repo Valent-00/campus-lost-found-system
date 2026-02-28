@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Found Items</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body data-page="found">
+
+<header>
+    <h1>Campus Lost & Found Management System</h1>
+</header>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">Lost & Found</a>
+        <div class="nav-links">
+            <a href="index.html" data-page="home">Home</a>
+            <a href="lost.html" data-page="lost">Lost</a>
+            <a href="found.html" data-page="found">Found</a>
+            <a href="report.html" class="nav-btn" data-page="report">Report</a>
+        </div>
+    </div>
+</nav>
+
+<div class="page-banner">
+    <h2>Found Items</h2>
+    <p>Browse all found item reports</p>
+</div>
+
+<main>
+    <div class="search-bar">
+        <div class="search-input-wrap">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search by title or location…">
+        </div>
+        <div class="filter-group">
+            <select class="filter-select" id="statusFilter">
+                <option value="">All Statuses</option>
+                <option value="Active">Active</option>
+                <option value="Claimed">Claimed</option>
+                <option value="Resolved">Resolved</option>
+            </select>
+            <select class="filter-select" id="sortFilter">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="az">A → Z</option>
+            </select>
+        </div>
+    </div>
+    <div class="results-count" id="resultsCount"></div>
+    <div id="itemsContainer" class="card-grid"></div>
+</main>
+
+<footer>
+    <p>© 2026 Quest International University</p>
+</footer>
+
+<script src="js/nav-auth.js" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>

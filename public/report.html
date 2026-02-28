@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Report Item</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body data-page="report">
+
+<header>
+    <h1>Report Lost / Found Item</h1>
+</header>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">Lost & Found</a>
+        <div class="nav-links">
+            <a href="index.html" data-page="home">Home</a>
+            <a href="lost.html" data-page="lost">Lost</a>
+            <a href="found.html" data-page="found">Found</a>
+            <a href="report.html" class="nav-btn" data-page="report">Report</a>
+        </div>
+    </div>
+</nav>
+
+<main class="form-container">
+
+<h2>Submit Report</h2>
+
+<form id="reportForm" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label for="name">Title</label>
+        <input type="text" id="name" name="name" placeholder="e.g. Black wallet, Blue water bottle" required>
+        <small class="field-hint">💡 Be specific — include colour, brand, or size</small>
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" placeholder="e.g. Black leather wallet with student ID inside..." required></textarea>
+        <small class="field-hint">💡 Include any unique marks, contents, or features that identify the item</small>
+    </div>
+
+    <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+            <option value="">Select type...</option>
+            <option value="Lost">Lost — I lost this item</option>
+            <option value="Found">Found — I found this item</option>
+        </select>
+        <small class="field-hint">💡 Choose Lost if you are looking for your item, Found if you picked up someone else's</small>
+    </div>
+
+    <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" placeholder="e.g. Library, Block B Cafeteria, Main Lobby" required>
+        <small class="field-hint">💡 Be as specific as possible — building, floor, or room helps</small>
+    </div>
+
+    <div class="form-group">
+        <label for="item_date">Date</label>
+        <input type="date" id="item_date" name="item_date" required>
+        <small class="field-hint">💡 The date you lost or found the item</small>
+    </div>
+
+    <div class="form-group">
+        <label for="contact_info">Contact Information</label>
+        <input type="text" id="contact_info" name="contact_info" placeholder="e.g. 012-3456789 or student@university.edu" required>
+        <small class="field-hint">💡 Enter your phone number or email so others can reach you</small>
+    </div>
+
+    <!-- Image Upload -->
+    <div class="form-group">
+        <label for="image">Photo (optional)</label>
+        <div class="image-upload-area" id="uploadArea">
+            <input type="file" id="image" name="image" accept="image/*">
+            <div class="upload-content">
+                <span class="upload-icon">📷</span>
+                <p><strong>Click to upload</strong> or drag & drop</p>
+                <p class="upload-sub">JPG, PNG, WEBP up to 5MB</p>
+            </div>
+        </div>
+        <div class="image-preview-wrap" id="previewWrap" style="display:none">
+            <img id="imagePreview" src="" alt="Preview">
+            <button type="button" class="remove-img" id="removeImg">✕ Remove</button>
+        </div>
+        <small class="field-hint">💡 A photo helps others identify the item faster</small>
+    </div>
+
+    <button type="submit" class="primary-btn" id="submitBtn">Submit Report</button>
+</form>
+
+<div id="successMessage" style="margin-top:15px; color:green; font-weight:600;"></div>
+<div id="errorMessage" style="margin-top:15px; color:red; font-weight:600;"></div>
+
+</main>
+
+<footer>
+<p>© 2026 Quest International University</p>
+</footer>
+
+<script src="js/nav-auth.js" defer></script>
+<script>
+// Image preview
+const imageInput  = document.getElementById("image");
+const previewWrap = document.getElementById("previewWrap");
+const imagePreview = document.getElementById("imagePreview");
+const uploadArea  = document.getElementById("uploadArea");
+const removeBtn   = document.getElementById("removeImg");
+
+imageInput.addEventListener("change", function() {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        imagePreview.src = e.target.result;
+        previewWrap.style.display = "flex";
+        uploadArea.style.display = "none";
+    };
+    reader.readAsDataURL(file);
+});
+
+removeBtn.addEventListener("click", function() {
+    imageInput.value = "";
+    imagePreview.src = "";
+    previewWrap.style.display = "none";
+    uploadArea.style.display = "block";
+});
+
+// Drag & drop
+uploadArea.addEventListener("dragover", e => { e.preventDefault(); uploadArea.classList.add("dragover"); });
+uploadArea.addEventListener("dragleave", () => uploadArea.classList.remove("dragover"));
+uploadArea.addEventListener("drop", e => {
+    e.preventDefault();
+    uploadArea.classList.remove("dragover");
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        imageInput.files = dt.files;
+        imageInput.dispatchEvent(new Event("change"));
+    }
+});
+
+// Form submit
+document.getElementById("reportForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const successMsg = document.getElementById("successMessage");
+    const errorMsg   = document.getElementById("errorMessage");
+    const submitBtn  = document.getElementById("submitBtn");
+
+    successMsg.textContent = "";
+    errorMsg.textContent = "";
+
+    // Use FormData so image file is included
+    const formData = new FormData(this);
+
+    if (!formData.get("name") || !formData.get("description") || !formData.get("category") ||
+        !formData.get("location") || !formData.get("item_date") || !formData.get("contact_info")) {
+        errorMsg.textContent = "Please fill in all fields before submitting.";
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
+    try {
+        // No Content-Type header — browser sets multipart boundary automatically
+        const response = await fetch("/items", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            successMsg.textContent = "✅ " + (data.message || "Report submitted successfully!");
+            alert("Report submitted successfully!");
+            this.reset();
+            previewWrap.style.display = "none";
+            uploadArea.style.display = "block";
+        } else {
+            errorMsg.textContent = "❌ " + (data.error || "Something went wrong.");
+        }
+
+    } catch (err) {
+        console.error(err);
+        errorMsg.textContent = "❌ Cannot connect to server.";
+    }
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Report";
+});
+</script>
+
+</body>
+</html>

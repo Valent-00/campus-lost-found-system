@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login — Lost & Found</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body data-page="login">
+
+<header>
+    <h1>Campus Lost & Found Management System</h1>
+</header>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">Lost & Found</a>
+        <div class="nav-links">
+            <a href="index.html" data-page="home">Home</a>
+            <a href="lost.html" data-page="lost">Lost</a>
+            <a href="found.html" data-page="found">Found</a>
+            <a href="login.html" data-page="login">Login</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+<div class="form-container">
+    <h2>Student Login</h2>
+    <p style="text-align:center; color:var(--muted); margin-bottom:24px; font-size:14px;">
+        Use your <strong>@quest.edu.my</strong> email to sign in
+    </p>
+
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="email">University Email</label>
+            <input type="email" id="email" name="email" placeholder="e.g. student@quest.edu.my" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="primary-btn" id="loginBtn">Login</button>
+
+        <p style="text-align:center; margin-top:16px; font-size:14px; color:var(--muted);">
+            Don't have an account? <a href="register.html" style="color:var(--blue); font-weight:600;">Register here</a>
+        </p>
+    </form>
+
+    <div id="errorMessage" style="margin-top:14px; color:red; font-weight:600; text-align:center;"></div>
+    <div id="successMessage" style="margin-top:14px; color:green; font-weight:600; text-align:center;"></div>
+</div>
+</main>
+
+<footer>
+    <p>© 2026 Quest International University</p>
+</footer>
+
+<script>
+// If already logged in, redirect to home
+fetch("/auth/me").then(r => r.json()).then(data => {
+    if (data.loggedIn) window.location.href = "index.html";
+});
+
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById("loginBtn");
+    const errorMsg = document.getElementById("errorMessage");
+    const successMsg = document.getElementById("successMessage");
+
+    errorMsg.textContent = "";
+    successMsg.textContent = "";
+    btn.disabled = true;
+    btn.textContent = "Logging in...";
+
+    const formData = {
+        email: document.getElementById("email").value.trim(),
+        password: document.getElementById("password").value
+    };
+
+    try {
+        const res = await fetch("/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            successMsg.textContent = "✅ Login successful! Redirecting...";
+            setTimeout(() => window.location.href = "index.html", 1000);
+        } else {
+            errorMsg.textContent = "❌ " + data.error;
+        }
+    } catch (err) {
+        errorMsg.textContent = "❌ Cannot connect to server.";
+    }
+
+    btn.disabled = false;
+    btn.textContent = "Login";
+});
+</script>
+
+</body>
+</html>
