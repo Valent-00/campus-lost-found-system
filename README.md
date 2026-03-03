@@ -15,10 +15,15 @@ A web-based system developed to digitize campus lost and found reporting.
 
 ## Technologies Used
 
-* Node.js
-* Express
-* MySQL
-* HTML/CSS/JS
+
+- Node.js
+- Express.js
+- MySQL 8.0
+- HTML / CSS / JavaScript
+- mysql2
+- dotenv
+- Git & GitHub
+
 
 ## Setup Instructions
 
@@ -28,7 +33,7 @@ A web-based system developed to digitize campus lost and found reporting.
 
 2\. Install MySQL Server 8.0
 
-3\. Create a database named web\_fa
+3\. Create a database named campus\_lost\_found
 
 4\. Import the provided database.sql file
 
